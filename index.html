@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Call Examples</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .card p {
+      color: #555;
+      margin-bottom: 15px;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 0.9em;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .output {
+      background: #f5f5f5;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      line-height: 1.5;
+      color: #333;
+    }
+
+    .output.loading {
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .output.error {
+      color: #e74c3c;
+      background: #fadbd8;
+      border-color: #e74c3c;
+    }
+
+    .output.success {
+      color: #27ae60;
+      background: #d5f4e6;
+      border-color: #27ae60;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .button-group button {
+      flex: 1;
+    }
+
+    .clear-btn {
+      background: #95a5a6;
+      margin-top: 10px;
+    }
+
+    .clear-btn:hover {
+      box-shadow: 0 4px 12px rgba(149, 165, 166, 0.4);
+    }
+
+    .info {
+      background: #e8f4f8;
+      border-left: 4px solid #3498db;
+      padding: 10px;
+      border-radius: 3px;
+      color: #2c3e50;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .card {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 API Call Examples</h1>
+
+    <div class="grid">
+      <!-- Card 1: GET Request -->
+      <div class="card">
+        <h2>1. GET Request</h2>
+        <p>Fetch data from a public API endpoint.</p>
+        <div class="info">
+          Uses JSONPlaceholder (fake API for testing)
+        </div>
+        <div class="input-group">
+          <label for="getUrl">API URL:</label>
+          <input type="text" id="getUrl" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="Enter API URL">
+        </div>
+        <button onclick="handleGetRequest()">Fetch Data</button>
+        <button class="clear-btn" onclick="clearOutput('output1')">Clear</button>
+        <div id="output1" class="output"></div>
+      </div>
+
+      <!-- Card 2: POST Request -->
+      <div class="card">
+        <h2>2. POST Request</h2>
+        <p>Send data to an API endpoint.</p>
+        <div class="info">
+          Sends JSON data to create a new resource
+        </div>
+        <div class="input-group">
+          <label for="postUrl">API URL:</label>
+          <input type="text" id="postUrl" value="https://jsonplaceholder.typicode.com/posts" placeholder="Enter API URL">
+        </div>
+        <div class="input-group">
+          <label for="postData">JSON Payload:</label>
+          <textarea id="postData">{
+  "title": "My Post",
+  "body": "This is a test post",
+  "userId": 1
+}</textarea>
+        </div>
+        <button onclick="handlePostRequest()">Send Data</button>
+        <button class="clear-btn" onclick="clearOutput('output2')">Clear</button>
+        <div id="output2" class="output"></div>
+      </div>
+
+      <!-- Card 3: GET with Parameters -->
+      <div class="card">
+        <h2>3. GET with Parameters</h2>
+        <p>Fetch data with query parameters.</p>
+        <div class="info">
+          Add filters to API requests
+        </div>
+        <div class="input-group">
+          <label for="paramUrl">Base URL:</label>
+          <input type="text" id="paramUrl" value="https://jsonplaceholder.typicode.com/posts" placeholder="Enter base URL">
+        </div>
+        <div class="input-group">
+          <label for="userId">User ID:</label>
+          <input type="text" id="userId" value="1" placeholder="Enter user ID">
+        </div>
+        <div class="input-group">
+          <label for="limit">Limit:</label>
+          <input type="text" id="limit" value="5" placeholder="Enter limit">
+        </div>
+        <button onclick="handleGetWithParams()">Fetch with Params</button>
+        <button class="clear-btn" onclick="clearOutput('output3')">Clear</button>
+        <div id="output3" class="output"></div>
+      </div>
+
+      <!-- Card 4: User Data -->
+      <div class="card">
+        <h2>4. User Data (XMLHttpRequest)</h2>
+        <p>Fetch user data using XMLHttpRequest method.</p>
+        <div class="info">
+          Traditional method (still works but Fetch is preferred)
+        </div>
+        <div class="input-group">
+          <label for="userId2">User ID:</label>
+          <input type="text" id="userId2" value="1" placeholder="Enter user ID (1-10)">
+        </div>
+        <button onclick="handleXHRRequest()">Get User Data</button>
+        <button class="clear-btn" onclick="clearOutput('output4')">Clear</button>
+        <div id="output4" class="output"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Utility function to display output
+    function displayOutput(elementId, data, isError = false, isLoading = false) {
+      const output = document.getElementById(elementId);
+      if (isLoading) {
+        output.className = 'output loading';
+        output.textContent = '⏳ Loading...';
+      } else if (isError) {
+        output.className = 'output error';
+        output.textContent = '❌ Error: ' + data;
+      } else {
+        output.className = 'output success';
+        output.textContent = '✅ Success:\n\n' + JSON.stringify(data, null, 2);
+      }
+    }
+
+    function clearOutput(elementId) {
+      document.getElementById(elementId).textContent = '';
+      document.getElementById(elementId).className = 'output';
+    }
+
+    // 1. GET Request
+    async function handleGetRequest() {
+      const url = document.getElementById('getUrl').value;
+      displayOutput('output1', '', false, true);
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        displayOutput('output1', data);
+      } catch (error) {
+        displayOutput('output1', error.message, true);
+      }
+    }
+
+    // 2. POST Request
+    async function handlePostRequest() {
+      const url = document.getElementById('postUrl').value;
+      const payloadText = document.getElementById('postData').value;
+      displayOutput('output2', '', false, true);
+
+      try {
+        const payload = JSON.parse(payloadText);
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        displayOutput('output2', data);
+      } catch (error) {
+        displayOutput('output2', error.message, true);
+      }
+    }
+
+    // 3. GET with Parameters
+    async function handleGetWithParams() {
+      const baseUrl = document.getElementById('paramUrl').value;
+      const userId = document.getElementById('userId').value;
+      const limit = document.getElementById('limit').value;
+      displayOutput('output3', '', false, true);
+
+      try {
+        const url = new URL(baseUrl);
+        url.searchParams.append('userId', userId);
+        url.searchParams.append('_limit', limit);
+
+        const response = await fetch(url);
+        const data = await response.json();
+        displayOutput('output3', data);
+      } catch (error) {
+        displayOutput('output3', error.message, true);
+      }
+    }
+
+    // 4. XMLHttpRequest
+    function handleXHRRequest() {
+      const userId = document.getElementById('userId2').value;
+      const url = `https://jsonplaceholder.typicode.com/users/${userId}`;
+      displayOutput('output4', '', false, true);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          displayOutput('output4', JSON.parse(xhr.responseText));
+        } else {
+          displayOutput('output4', `Status: ${xhr.status}`, true);
+        }
+      };
+
+      xhr.onerror = function() {
+        displayOutput('output4', 'Request failed', true);
+      };
+
+      xhr.send();
+    }
+  </script>
+</body>
+</html>
